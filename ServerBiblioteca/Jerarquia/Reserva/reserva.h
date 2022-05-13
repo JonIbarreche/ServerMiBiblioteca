@@ -4,20 +4,12 @@
 #define RESERVA_H_
 
 #include "../../Jerarquia/Usuario/usuario.h"
-#include "../../Jerarquia/Libro/libro.h"
-//typedef struct{
-//	char fechaInicio[8];
-//    char fechaFinal[8];
-//}Fecha;
+#include "../../Jerarquia/Biblioteca/biblioteca.h"
 
 typedef struct {
 	int idReserva;
-	char concepto[100];
-	//Fecha fecha;
-	char fechaInicio[8];
-	char fechaFinal[8];
 	Usuario usuario;
-	Libro libro;
+	Biblioteca biblioteca;
 } Reserva;
 
 void anadirReserva(sqlite3 *db, int result, Reserva reserva);
