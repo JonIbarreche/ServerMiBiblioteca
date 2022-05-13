@@ -146,9 +146,9 @@ int main(int argc, char *argv[]) {
 		int idDefaultB = 0;
 		int idDefaultR = 0;
 
-		proyectoLog("Ejecutando log...");
-		proyectoWarning("Warnig log...");
-		proyectoError("Error log");
+//		proyectoLog("Ejecutando log...");
+//		proyectoWarning("Warnig log...");
+//		proyectoError("Error log");
 
 		Usuario u;
 		u.idUsuario = idDefaultU;
@@ -206,29 +206,29 @@ int main(int argc, char *argv[]) {
 		strcpy(s2.residencia, "Bilbao");
 		s2.codigoPostal = 48012;
 
-		Libro l;
-		l.idLibro = idDefaultL;
-		strcpy(l.isbn, "9923");
-		strcpy(l.titulo, "Cien años");
-		strcpy(l.autor, "Latifi");
-		strcpy(l.genero, "Guerra");
-		l.paginas = 150;
-
-		Libro l1;
-		l1.idLibro = idDefaultL;
-		strcpy(l1.isbn, "8823");
-		strcpy(l1.titulo, "Romancero");
-		strcpy(l1.autor, "Alonso");
-		strcpy(l1.genero, "Romance");
-		l1.paginas = 260;
-
-		Libro l2;
-		l2.idLibro = idDefaultL;
-		strcpy(l2.isbn, "7723");
-		strcpy(l2.titulo, "Educacion");
-		strcpy(l2.autor, "Samuel");
-		strcpy(l2.genero, "Educativo");
-		l2.paginas = 300;
+//		Libro l;
+//		l.idLibro = idDefaultL;
+//		strcpy(l.isbn, "9923");
+//		strcpy(l.titulo, "Cien años");
+//		strcpy(l.autor, "Latifi");
+//		strcpy(l.genero, "Guerra");
+//		l.paginas = 150;
+//
+//		Libro l1;
+//		l1.idLibro = idDefaultL;
+//		strcpy(l1.isbn, "8823");
+//		strcpy(l1.titulo, "Romancero");
+//		strcpy(l1.autor, "Alonso");
+//		strcpy(l1.genero, "Romance");
+//		l1.paginas = 260;
+//
+//		Libro l2;
+//		l2.idLibro = idDefaultL;
+//		strcpy(l2.isbn, "7723");
+//		strcpy(l2.titulo, "Educacion");
+//		strcpy(l2.autor, "Samuel");
+//		strcpy(l2.genero, "Educativo");
+//		l2.paginas = 300;
 
 		Biblioteca b;
 		b.idBiblioteca = idDefaultB;
@@ -258,30 +258,21 @@ int main(int argc, char *argv[]) {
 		strcpy(b2.barrio, "Erandio");
 
 		Reserva r;
-		r.idReserva = 12;
-		strcpy(r.concepto, "Reserva Libro 1");
-		strcpy(r.fechaInicio, "14/04/22");
-		strcpy(r.fechaFinal, "14/05/22");
+		r.idReserva = 1;
 		strcpy(r.usuario.nomUsuario, "jonibr");
-		strcpy(r.libro.isbn, "9923");
+		strcpy(r.biblioteca.nombre, "Bilbao Biblio");
 
 		Reserva r1;
-		r1.idReserva = 2;
-		strcpy(r1.concepto, "Reserva Libro 2");
-		strcpy(r1.fechaInicio, "19/04/22");
-		strcpy(r1.fechaFinal, "19/05/22");
-		strcpy(r1.usuario.nomUsuario, "unaifj");
-		strcpy(r1.libro.isbn, "8823");
+		r.idReserva = 2;
+		strcpy(r.usuario.nomUsuario, "unaifj");
+		strcpy(r.biblioteca.nombre, "Barakaldo Biblio");
 
 		Reserva r2;
-		r2.idReserva = 3;
-		strcpy(r2.concepto, "Reserva Libro 3");
-		strcpy(r2.fechaInicio, "25/04/22");
-		strcpy(r2.fechaFinal, "28/05/22");
-		strcpy(r2.usuario.nomUsuario, "andream");
-		strcpy(r2.libro.isbn, "7723");
+		r.idReserva = 3;
+		strcpy(r.usuario.nomUsuario, "samu");
+		strcpy(r.biblioteca.nombre, "Artxanda");
 
-		adminTxt(u5);
+		//adminTxt(u5);
 
 		sqlite3 *db;
 
@@ -294,7 +285,7 @@ int main(int argc, char *argv[]) {
 
 
 		eliminarTodosSocios(db, result);
-		eliminarTodosLibros(db, result);
+//		eliminarTodosLibros(db, result);
 		eliminarTodasBibliotecas(db, result);
 		eliminarTodasReservas(db, result);
 
@@ -308,9 +299,9 @@ int main(int argc, char *argv[]) {
 		anadirSocio(db, result, s1);
 		anadirSocio(db, result, s2);
 
-		anadirLibro(db, result, l);
-		anadirLibro(db, result, l1);
-		anadirLibro(db, result, l2);
+//		anadirLibro(db, result, l);
+//		anadirLibro(db, result, l1);
+//		anadirLibro(db, result, l2);
 
 		anadirBiblioteca(db, result, b);
 		anadirBiblioteca(db, result, b1);
@@ -320,13 +311,13 @@ int main(int argc, char *argv[]) {
 		//anadirReserva(db, result, r1);
 		//anadirReserva(db, result, r2);
 
-		imprimirUsuarios(db);
-		imprimirSocios(db);
-		imprimirLibros(db);
-		imprimirBiblioteca(db);
-		imprimirReserva(db);
-
-		inicioAdmin(db, result);
+//		imprimirUsuarios(db);
+//		imprimirSocios(db);
+//		imprimirLibros(db);
+//		imprimirBiblioteca(db);
+//		imprimirReserva(db);
+//
+//		inicioAdmin(db, result);
 
 
 		result = sqlite3_close(db);
