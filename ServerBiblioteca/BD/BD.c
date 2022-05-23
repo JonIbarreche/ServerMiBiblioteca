@@ -222,11 +222,11 @@ int insertBiblioteca(sqlite3 *db, char nombre[], int aforo, char estado[],
 	return SQLITE_OK;
 }
 
-int insertReserva(sqlite3 *db, char nomUsuario[], char nombre[],int id) {
+int insertReserva(sqlite3 *db, char nomUsuario[], char nombre[]) {
 	sqlite3_stmt *stmt;
 
 	char sql[] =
-			"insert into reserva (nomUsuario, nombre, idReserva) values (?, ?, ?)";
+			"insert into reserva (idReserva, nomUsuario, nombre) values (?, ?, ?)";
 	int result = sqlite3_prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL);
 	if (result != SQLITE_OK) {
 		printf("Error preparing statement (INSERT)\n");
@@ -250,13 +250,6 @@ int insertReserva(sqlite3 *db, char nomUsuario[], char nombre[],int id) {
 		printf("%s\n", sqlite3_errmsg(db));
 		return result;
 		}
-	result = sqlite3_bind_int(stmt, 3, id);
-	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
-		return result;
-	}
-
 	result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
 		printf("Error inserting new data into Reserva table\n");
@@ -582,7 +575,7 @@ int imprimirSocios(sqlite3 *db) {
 
 	char nombre[20];
 	char apellido[20];
-	int dni;
+	char dni;
 	char correo[20];
 	char residencia[30];
 	int codigoPostal;
@@ -595,12 +588,12 @@ int imprimirSocios(sqlite3 *db) {
 		if (result == SQLITE_ROW) {
 			strcpy(nombre, (char*) sqlite3_column_text(stmt, 0));
 			strcpy(apellido, (char*) sqlite3_column_text(stmt, 1));
-			dni = sqlite3_column_int(stmt, 2);
+			strcpy(dni, (char*) sqlite3_column_text(stmt, 2));
 			strcpy(correo, (char*) sqlite3_column_text(stmt, 3));
 			strcpy(residencia, (char*) sqlite3_column_text(stmt, 4));
 			codigoPostal = sqlite3_column_int(stmt, 5);
 			printf(
-					"Nombre: %s Apellido: %s DNI: %d Correo: %s Residencia: %s Codigo postal: %d\n",
+					"Nombre: %s Apellido: %s DNI: %s Correo: %s Residencia: %s Codigo postal: %d\n",
 					nombre, apellido, dni, correo, residencia, codigoPostal);
 		}
 	} while (result == SQLITE_ROW);
@@ -995,4 +988,125 @@ int deleteAllReservas(sqlite3 *db) {
 	printf("Prepared statement finalized (DELETE)\n");
 
 	return SQLITE_OK;
+}
+
+Usuario* getUsuarios(sqlite3 *db) {
+	sqlite3_stmt *stmt;
+	Usuario *usuarios = (Usuario*) malloc(50 * sizeof(Usuario));
+
+	char sql[] = "select idUsuario, nombre, apellido, nomUsuario, contrasenya from usuario";
+
+	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+	if (result != SQLITE_OK) {
+		printf("Error preparing statement (SELECT)\n");
+		printf("%s\n", sqlite3_errmsg(db));
+	}
+
+	int i = 0;
+
+	printf("\n");
+	printf("\n");
+	printf("Recuperando usuarios:\n");
+	do {
+		result = sqlite3_step(stmt);
+		if (result == SQLITE_ROW) {
+			usuarios[i].idUsuario = sqlite3_column_int(stmt, 0);
+			strcpy(usuarios[i].nombre, (char *) sqlite3_column_text(stmt, 1));
+			strcpy(usuarios[i].apellido, (char *) sqlite3_column_text(stmt, 2));
+			strcpy(usuarios[i].nomUsuario, (char *) sqlite3_column_text(stmt, 3));
+			strcpy(usuarios[i].contrasenya, (char *) sqlite3_column_text(stmt, 4));
+			i++;
+		}
+	} while (result == SQLITE_ROW);
+
+	printf("\n");
+	printf("\n");
+
+	result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizing statement (SELECT)\n");
+		printf("%s\n", sqlite3_errmsg(db));
+	}
+
+	return usuarios;
+}
+
+Biblioteca* getBibliotecas(sqlite3 *db) {
+	sqlite3_stmt *stmt;
+	Biblioteca *bibliotecas = (Biblioteca*) malloc(50 * sizeof(Biblioteca));
+
+	char sql[] = "select idBiblioteca, nombre, aforo, estado, genero, instalacion, barrio from biblioteca";
+
+	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+	if (result != SQLITE_OK) {
+		printf("Error preparing statement (SELECT)\n");
+		printf("%s\n", sqlite3_errmsg(db));
+	}
+
+	int i = 0;
+	printf("\n");
+	printf("\n");
+	printf("Recuperando bibliotecas:\n");
+	do {
+		result = sqlite3_step(stmt);
+		if (result == SQLITE_ROW) {
+			bibliotecas[i].idBiblioteca = sqlite3_column_int(stmt, 0);
+			strcpy(bibliotecas[i].nombre, (char *) sqlite3_column_text(stmt, 1));
+			bibliotecas[i].aforo = sqlite3_column_int(stmt, 2);
+			strcpy(bibliotecas[i].estado, (char *) sqlite3_column_text(stmt, 3));
+			strcpy(bibliotecas[i].genero, (char *) sqlite3_column_text(stmt, 4));
+			strcpy(bibliotecas[i].instalacion, (char *) sqlite3_column_text(stmt, 5));
+			strcpy(bibliotecas[i].barrio, (char *) sqlite3_column_text(stmt, 6));
+			i++;
+		}
+	} while (result == SQLITE_ROW);
+
+	printf("\n");
+	printf("\n");
+
+	result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizing statement (SELECT)\n");
+		printf("%s\n", sqlite3_errmsg(db));
+	}
+
+	return bibliotecas;
+}
+
+Reserva* getReservas(sqlite3 *db) {
+	sqlite3_stmt *stmt;
+	Reserva *reservas = (Reserva*) malloc(50 * sizeof(Reserva));
+
+	char sql[] = "select idReserva, nomUsuario, nombre from reserva";
+
+	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+	if (result != SQLITE_OK) {
+		printf("Error preparing statement (SELECT)\n");
+		printf("%s\n", sqlite3_errmsg(db));
+	}
+
+	int i = 0;
+	printf("\n");
+	printf("\n");
+	printf("Recuperando reserva:\n");
+	do {
+		result = sqlite3_step(stmt);
+		if (result == SQLITE_ROW) {
+			reservas[i].idReserva = sqlite3_column_int(stmt, 0);
+			strcpy(reservas[i].usuario.nomUsuario, (char *) sqlite3_column_text(stmt, 1));
+			strcpy(reservas[i].biblioteca.nombre, (char *) sqlite3_column_text(stmt, 2));
+			i++;
+		}
+	} while (result == SQLITE_ROW);
+
+	printf("\n");
+	printf("\n");
+
+	result = sqlite3_finalize(stmt);
+	if (result != SQLITE_OK) {
+		printf("Error finalizing statement (SELECT)\n");
+		printf("%s\n", sqlite3_errmsg(db));
+	}
+
+	return reservas;
 }

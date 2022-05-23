@@ -17,12 +17,12 @@ void anadirSocio(sqlite3 *db, int result, Socio socio) {
 }
 
 void imprimirSocio(sqlite3 *db, Socio socio) {
-	printf("NOMNRE: %i\n", socio.nombre);
+	printf("NOMBRE: %s\n", socio.nombre);
 	printf("APELLIDO: %s\n", socio.apellido);
 	printf("DNI: %s\n", socio.DNI);
 	printf("CORREO: %s\n", socio.correo);
 	printf("RESIDENCIA: %s\n", socio.residencia);
-	printf("CODIGO POSTAL: %s\n", socio.codigoPostal);
+	printf("CODIGO POSTAL: %i\n", socio.codigoPostal);
 }
 
 void eliminarSocio(sqlite3 *db, int result, char cod[100]) {

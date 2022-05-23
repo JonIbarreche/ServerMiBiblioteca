@@ -19,7 +19,7 @@ int insertSocio(sqlite3 *db, char nombre[], char apellido[], int DNI,
 		char correo[], char residencia[], int codigoPostal);
 int insertBiblioteca(sqlite3 *db, char nombre[], int aforo, char estado[],
 		char genero[], char instalacion[], char barrio[]);
-int insertReserva(sqlite3 *db, char nomUsuario[], char nombre[], int id);
+int insertReserva(sqlite3 *db, char nomUsuario[], char nombre[]);
 
 int imprimirUsuarios(sqlite3 *db);
 int imprimirSocios(sqlite3 *db);
@@ -40,5 +40,9 @@ Usuario getUsuario(sqlite3 *db, char cod[100]);
 Socio getSocio(sqlite3 *db, char cod[100]);
 Biblioteca getBiblioteca(sqlite3 *db, char cod[100]);
 Reserva getReserva(sqlite3 *db, char cod[100]);
+
+Usuario* getUsuarios(sqlite3 *db);
+Biblioteca* getBibliotecas(sqlite3 *db);
+Reserva* getReservas(sqlite3 *db);
 
 #endif /* BD_BD_H_ */
