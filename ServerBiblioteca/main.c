@@ -99,16 +99,16 @@ int main(int argc, char *argv[]) {
 	Biblioteca b;
 	b.idBiblioteca = idDefaultB;
 	strcpy(b.nombre, "Biblioteca Basurto");
-	b.aforo = 300;
+	b.aforo = 30;
 	strcpy(b.estado, "08:00 - 20:00");
-	strcpy(b.genero, "Militar");
+	strcpy(b.genero, "Docencia");
 	strcpy(b.instalacion, "Zona Fumadores");
 	strcpy(b.barrio, "Basurto");
 
 	Biblioteca b1;
 	b1.idBiblioteca = idDefaultB;
 	strcpy(b1.nombre, "Biblioteca Indautxu");
-	b1.aforo = 400;
+	b1.aforo = 40;
 	strcpy(b1.estado, "08:30 - 19:00");
 	strcpy(b1.genero, "Arte");
 	strcpy(b1.instalacion, "Sala Ordenadores");
@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
 	Biblioteca b2;
 	b2.idBiblioteca = idDefaultB;
 	strcpy(b2.nombre, "Biblioteca Erandio");
-	b2.aforo = 100;
+	b2.aforo = 10;
 	strcpy(b2.estado, "10:00 - 17:00");
 	strcpy(b2.genero, "Urbano");
 	strcpy(b2.instalacion, "Sala Estudio");
@@ -160,9 +160,9 @@ int main(int argc, char *argv[]) {
 	anadirBiblioteca(db, result, b1);
 	anadirBiblioteca(db, result, b2);
 
-//	anadirReserva(db, result, r);
-//	anadirReserva(db, result, r1);
-//	anadirReserva(db, result, r2);
+	anadirReserva(db, result, r);
+	anadirReserva(db, result, r1);
+	anadirReserva(db, result, r2);
 
 //		imprimirUsuarios(db);
 //		imprimirSocios(db);
@@ -241,7 +241,7 @@ int main(int argc, char *argv[]) {
 	do {
 		recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
 
-		printf("Command receivedeeeeee: %s \n", recvBuff);
+		printf("Command receivede: %s \n", recvBuff);
 
 		Usuario u;
 		Reserva r;
@@ -277,17 +277,17 @@ int main(int argc, char *argv[]) {
 		if (strcmp(recvBuff, "GETUSUARIOS") == 0) {
 			recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
 			if (strcmp(recvBuff, "GETUSUARIOS-END") == 0);
-			printf("hola");
+//			printf("hola");
 			Usuario *usuarios = getUsuarios(db);
 
 			int i;
 			for (i = 0; i < 50; i++) {
-				printf("adios");
+//				printf("adios");
 				if (usuarios[i].idUsuario != 0) {
-					printf("adios333");
+//					printf("adios333");
 					sprintf(sendBuff, "%s", "USERDATA");
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
-					printf("adios2");
+//					printf("adios2");
 					sprintf(sendBuff, "%d", usuarios[i].idUsuario);
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 					printf("Response sent: %s \n", sendBuff);
@@ -304,7 +304,7 @@ int main(int argc, char *argv[]) {
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 					printf("Response sent: %s \n", sendBuff);
 				} else {
-					printf("adios4444");
+//					printf("adios4444");
 					i = 50;
 					sprintf(sendBuff, "%s", "ENDUSERDATA");
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
@@ -394,11 +394,11 @@ int main(int argc, char *argv[]) {
 					r.idReserva = atoi(recvBuff);
 				}
 				if (contador == 2) {
-					printf("Nombre de usuario: %s\n", recvBuff);
+					printf("Nombre de usuario: %d\n", recvBuff);
 					strcpy(r.biblioteca.nombre, recvBuff);
 				}
 				if (contador == 3) {
-					printf("Nombre de biblioteca: %s\n", recvBuff);
+					printf("Nombre de biblioteca: %d\n", recvBuff);
 					strcpy(r.biblioteca.nombre, recvBuff);
 				}
 
@@ -408,26 +408,30 @@ int main(int argc, char *argv[]) {
 			imprimirReserva(db);
 		}
 
-		if (strcmp(recvBuff, "RAIZ") == 0) {
+		if (strcmp(recvBuff, "GETRESERVAS") == 0) {
 			recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-			int n = atoi(recvBuff);
-			float raiz = sqrt(n);
+			if (strcmp(recvBuff, "GETRESERVAS-END") == 0);
 
-			recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-			if (strcmp(recvBuff, "RAIZ-END") == 0); // Nada que hacer
+			Reserva *reservas = getReservas(db);
 
-			sprintf(sendBuff, "%f", raiz);
-			send(comm_socket, sendBuff, sizeof(sendBuff), 0);
-			printf("Response sent: %s \n", sendBuff);
-		}
-
-		if (strcmp(recvBuff, "IP") == 0) {
-			recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
-			if (strcmp(recvBuff, "IP-END") == 0); // Nada que hacer
-
-			strcpy(sendBuff, inet_ntoa(server.sin_addr));
-			send(comm_socket, sendBuff, sizeof(sendBuff), 0);
-			printf("Response sent: %s \n", sendBuff);
+			int i = 0;
+			for (i = 0; i < 50; i++) {
+				if (reservas[i].idReserva != 0) {
+					sprintf(sendBuff, "%d", reservas[i].idReserva);
+					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+					printf("Response sent: %s \n", sendBuff);
+					sprintf(sendBuff, "%d", reservas[i].usuario.nomUsuario);
+					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+					printf("Response sent: %s \n", sendBuff);
+					sprintf(sendBuff, "%d", reservas[i].biblioteca.nombre);
+					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+					printf("Response sent: %s \n", sendBuff);
+				} else {
+					i = 50;
+					sprintf(sendBuff, "%s", "FINRESERVAS");
+					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+				}
+			}
 		}
 
 		if (strcmp(recvBuff, "EXIT") == 0)
