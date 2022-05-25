@@ -575,7 +575,7 @@ int imprimirSocios(sqlite3 *db) {
 
 	char nombre[20];
 	char apellido[20];
-	char dni;
+	int dni;
 	char correo[20];
 	char residencia[30];
 	int codigoPostal;
@@ -588,12 +588,12 @@ int imprimirSocios(sqlite3 *db) {
 		if (result == SQLITE_ROW) {
 			strcpy(nombre, (char*) sqlite3_column_text(stmt, 0));
 			strcpy(apellido, (char*) sqlite3_column_text(stmt, 1));
-			strcpy(dni, (char*) sqlite3_column_text(stmt, 2));
+			dni = sqlite3_column_int(stmt, 2);
 			strcpy(correo, (char*) sqlite3_column_text(stmt, 3));
 			strcpy(residencia, (char*) sqlite3_column_text(stmt, 4));
 			codigoPostal = sqlite3_column_int(stmt, 5);
 			printf(
-					"Nombre: %s Apellido: %s DNI: %s Correo: %s Residencia: %s Codigo postal: %d\n",
+					"Nombre: %s Apellido: %s DNI: %d Correo: %s Residencia: %s Codigo postal: %d\n",
 					nombre, apellido, dni, correo, residencia, codigoPostal);
 		}
 	} while (result == SQLITE_ROW);
@@ -993,6 +993,7 @@ int deleteAllReservas(sqlite3 *db) {
 Usuario* getUsuarios(sqlite3 *db) {
 	sqlite3_stmt *stmt;
 	Usuario *usuarios = (Usuario*) malloc(50 * sizeof(Usuario));
+	for(int j=0;j<50;j++) usuarios[j].idUsuario=0;
 
 	char sql[] = "select idUsuario, nombre, apellido, nomUsuario, contrasenya from usuario";
 

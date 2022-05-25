@@ -6,7 +6,7 @@
 typedef struct {
 	char nombre[20];
 	char apellido[20];
-	char DNI;
+	int DNI;
 	char correo[20];
 	char residencia[30];
 	int codigoPostal;

@@ -66,6 +66,9 @@ int main(int argc, char *argv[]) {
 	strcpy(u4.contrasenya, "123");
 
 	Usuario u5;
+	u5.idUsuario = idDefaultU;
+	strcpy(u5.nombre, "ad");
+	strcpy(u5.apellido, "ad");
 	strcpy(u5.nomUsuario, "admin");
 	strcpy(u5.contrasenya, "admin");
 
@@ -238,7 +241,7 @@ int main(int argc, char *argv[]) {
 	do {
 		recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
 
-		printf("Command received: %s \n", recvBuff);
+		printf("Command receivedeeeeee: %s \n", recvBuff);
 
 		Usuario u;
 		Reserva r;
@@ -274,13 +277,17 @@ int main(int argc, char *argv[]) {
 		if (strcmp(recvBuff, "GETUSUARIOS") == 0) {
 			recv(comm_socket, recvBuff, sizeof(recvBuff), 0);
 			if (strcmp(recvBuff, "GETUSUARIOS-END") == 0);
-
-			Usuario *usuarios = (Usuario*) malloc(50 * sizeof(Usuario));
-			usuarios = getUsuarios(db);
+			printf("hola");
+			Usuario *usuarios = getUsuarios(db);
 
 			int i;
 			for (i = 0; i < 50; i++) {
+				printf("adios");
 				if (usuarios[i].idUsuario != 0) {
+					printf("adios333");
+					sprintf(sendBuff, "%s", "USERDATA");
+					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
+					printf("adios2");
 					sprintf(sendBuff, "%d", usuarios[i].idUsuario);
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 					printf("Response sent: %s \n", sendBuff);
@@ -297,8 +304,9 @@ int main(int argc, char *argv[]) {
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 					printf("Response sent: %s \n", sendBuff);
 				} else {
+					printf("adios4444");
 					i = 50;
-					sprintf(sendBuff, "%s", "FININICIO");
+					sprintf(sendBuff, "%s", "ENDUSERDATA");
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 				}
 			}
@@ -344,12 +352,14 @@ int main(int argc, char *argv[]) {
 			int i;
 			for (i = 0; i < 50; i++) {
 				if (bibliotecas[i].idBiblioteca != 0) {
+					sprintf(sendBuff, "%s", "FINBUSCA");
+					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 					sprintf(sendBuff, "%d", bibliotecas[i].idBiblioteca);
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 					printf("Response sent: %s \n", sendBuff);
 					sprintf(sendBuff, "%s", bibliotecas[i].nombre);
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
-					printf("Response sent: %s \n", sendBuff);
+					printf("Response sent: %d \n", sendBuff);
 					sprintf(sendBuff, "%d", bibliotecas[i].aforo);
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 					printf("Response sent: %s \n", sendBuff);
@@ -367,7 +377,7 @@ int main(int argc, char *argv[]) {
 					printf("Response sent: %s \n", sendBuff);
 				} else {
 					i = 50;
-					sprintf(sendBuff, "%s", "FINBUSCA");
+					sprintf(sendBuff, "%s", "FINBUSCA-END");
 					send(comm_socket, sendBuff, sizeof(sendBuff), 0);
 				}
 			}
