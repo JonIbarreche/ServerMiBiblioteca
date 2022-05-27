@@ -7,6 +7,7 @@
 #include "../Jerarquia/Socio/socio.h"
 #include "../Jerarquia/Reserva/reserva.h"
 #include "../Jerarquia/Biblioteca/biblioteca.h"
+#include "../Log/logger.h"
 
 int insertUsuario(sqlite3 *db, char nombre[], char apellido[],
 		char nomUsuario[], char contrasenya[]) {
@@ -16,55 +17,55 @@ int insertUsuario(sqlite3 *db, char nombre[], char apellido[],
 			"insert into usuario (idUsuario, nombre, apellido, nomUsuario, contrasenya) values (NULL, ?, ?, ?, ?)";
 	int result = sqlite3_prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (INSERT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (INSERT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("SQL query prepared (INSERT)\n");
+	LOG_PRINT("SQL query prepared (INSERT)\n");
 
 	result = sqlite3_bind_text(stmt, 1, nombre, strlen(nombre), SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 	result = sqlite3_bind_text(stmt, 2, apellido, strlen(apellido),
 	SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 	result = sqlite3_bind_text(stmt, 3, nomUsuario, strlen(nomUsuario),
 	SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 	result = sqlite3_bind_text(stmt, 4, contrasenya, strlen(contrasenya),
 	SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
 	result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
-		printf("Error inserting new data into Usuario table\n");
+		LOG_PRINT("Error inserting new data into Usuario table\n");
 		return result;
 	}
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (INSERT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (INSERT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("Prepared statement finalized (INSERT)\n");
+	LOG_PRINT("Prepared statement finalized (INSERT)\n");
 
 	return SQLITE_OK;
 }
@@ -77,8 +78,8 @@ int insertSocio(sqlite3 *db, char nombre[], char apellido[], int DNI,
 			"insert into socio (nombre, apellido, DNI, correo, residencia, codigoPostal) values (?, ?, ?, ?, ?, ?)";
 	int result = sqlite3_prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (INSERT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (INSERT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
@@ -87,62 +88,62 @@ int insertSocio(sqlite3 *db, char nombre[], char apellido[], int DNI,
 	char charCP[9];
 	sprintf(charCP, "%d", codigoPostal);
 
-	printf("SQL query prepared (INSERT)\n");
+	LOG_PRINT("SQL query prepared (INSERT)\n");
 
 	result = sqlite3_bind_text(stmt, 1, nombre, strlen(nombre), SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 	result = sqlite3_bind_text(stmt, 2, apellido, strlen(apellido),
 	SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 	result = sqlite3_bind_text(stmt, 3, charDNI, strlen(charDNI),
 	SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 	result = sqlite3_bind_text(stmt, 4, correo, strlen(correo), SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 	result = sqlite3_bind_text(stmt, 5, residencia, strlen(residencia),
 	SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 	result = sqlite3_bind_text(stmt, 6, charCP, strlen(charCP), SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
 	result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
-		printf("Error inserting new data into Socio table\n");
+		LOG_PRINT("Error inserting new data into Socio table\n");
 		return result;
 	}
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (INSERT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (INSERT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("Prepared statement finalized (INSERT)\n");
+	LOG_PRINT("Prepared statement finalized (INSERT)\n");
 
 	return SQLITE_OK;
 }
@@ -155,69 +156,69 @@ int insertBiblioteca(sqlite3 *db, char nombre[], int aforo, char estado[],
 			"insert into biblioteca (idBiblioteca, nombre, aforo, estado, genero, instalacion, barrio) values (NULL, ?, ?, ?, ?, ?, ?)";
 	int result = sqlite3_prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (INSERT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (INSERT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
 	char charAforo[20];
 	sprintf(charAforo, "%d", aforo);
 
-	printf("SQL query prepared (INSERT)\n");
+	LOG_PRINT("SQL query prepared (INSERT)\n");
 
 	result = sqlite3_bind_text(stmt, 1, nombre, strlen(nombre), SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 	result = sqlite3_bind_text(stmt, 2, charAforo, strlen(charAforo),
 	SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 	result = sqlite3_bind_text(stmt, 3, estado, strlen(estado), SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 	result = sqlite3_bind_text(stmt, 4, genero, strlen(genero), SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 	result = sqlite3_bind_text(stmt, 5, instalacion, strlen(instalacion),
 	SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 	result = sqlite3_bind_text(stmt, 6, barrio, strlen(barrio), SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
 	result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
-		printf("Error inserting new data into Biblioteca table\n");
+		LOG_PRINT("Error inserting new data into Biblioteca table\n");
 		return result;
 	}
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (INSERT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (INSERT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("Prepared statement finalized (INSERT)\n");
+	LOG_PRINT("Prepared statement finalized (INSERT)\n");
 
 	return SQLITE_OK;
 }
@@ -229,41 +230,41 @@ int insertReserva(sqlite3 *db, char nomUsuario[], char nombre[]) {
 			"insert into reserva (idReserva, nomUsuario, nombre) values (?, ?, ?)";
 	int result = sqlite3_prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (INSERT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (INSERT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("SQL query prepared (INSERT)\n");
+	LOG_PRINT("SQL query prepared (INSERT)\n");
 
 	result = sqlite3_bind_text(stmt, 1, nomUsuario, strlen(nomUsuario),
 	SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 	result = sqlite3_bind_text(stmt, 2, nombre, strlen(nombre),
 	SQLITE_STATIC);
 	if (result != SQLITE_OK) {
-		printf("Error binding parameters\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error binding parameters\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 		}
 	result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
-		printf("Error inserting new data into Reserva table\n");
+		LOG_PRINT("Error inserting new data into Reserva table\n");
 		return result;
 	}
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (INSERT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (INSERT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("Prepared statement finalized (INSERT)\n");
+	LOG_PRINT("Prepared statement finalized (INSERT)\n");
 
 	return SQLITE_OK;
 }
@@ -277,11 +278,11 @@ Usuario getUsuario(sqlite3 *db, char cod[100]) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 
-	printf("SQL query prepared (SELECT)\n");
+	LOG_PRINT("SQL query prepared (SELECT)\n");
 
 	//Los atributos de Usuario que se recibirán
 	char idUsuario[100];
@@ -290,9 +291,9 @@ Usuario getUsuario(sqlite3 *db, char cod[100]) {
 	char nomUsuario[100];
 	char contrasenya[100];
 
-	printf("\n");
-	printf("\n");
-	printf("USUARIO:\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("USUARIO:\n");
 	do {
 		result = sqlite3_step(stmt);
 		if (result == SQLITE_ROW) {
@@ -312,16 +313,16 @@ Usuario getUsuario(sqlite3 *db, char cod[100]) {
 		}
 	} while (result == SQLITE_ROW);
 
-	printf("\n");
-	printf("\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("\n");
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 
-	printf("Prepared statement finalized (SELECT)\n");
+	LOG_PRINT("Prepared statement finalized (SELECT)\n");
 
 	return u;
 }
@@ -336,11 +337,11 @@ Socio getSocio(sqlite3 *db, char cod[100]) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 
-	printf("SQL query prepared (SELECT)\n");
+	LOG_PRINT("SQL query prepared (SELECT)\n");
 
 	char nombre[20];
 	char apellido[20];
@@ -349,9 +350,9 @@ Socio getSocio(sqlite3 *db, char cod[100]) {
 	char residencia[30];
 	char codigoPostal[20];
 
-	printf("\n");
-	printf("\n");
-	printf("SOCIO:\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("SOCIO:\n");
 	do {
 		result = sqlite3_step(stmt);
 		if (result == SQLITE_ROW) {
@@ -374,16 +375,16 @@ Socio getSocio(sqlite3 *db, char cod[100]) {
 		}
 	} while (result == SQLITE_ROW);
 
-	printf("\n");
-	printf("\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("\n");
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 
-	printf("Prepared statement finalized (SELECT)\n");
+	LOG_PRINT("Prepared statement finalized (SELECT)\n");
 
 	return s;
 }
@@ -397,11 +398,11 @@ Biblioteca getBiblioteca(sqlite3 *db, char cod[100]) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 
-	printf("SQL query prepared (SELECT)\n");
+	LOG_PRINT("SQL query prepared (SELECT)\n");
 
 	char idBiblioteca[20];
 	char nombre[40];
@@ -411,9 +412,9 @@ Biblioteca getBiblioteca(sqlite3 *db, char cod[100]) {
 	char instalacion[20];
 	char barrio[15];
 
-	printf("\n");
-	printf("\n");
-	printf("BIBLIOTECA:\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("BIBLIOTECA:\n");
 	do {
 		result = sqlite3_step(stmt);
 		if (result == SQLITE_ROW) {
@@ -438,16 +439,16 @@ Biblioteca getBiblioteca(sqlite3 *db, char cod[100]) {
 		}
 	} while (result == SQLITE_ROW);
 
-	printf("\n");
-	printf("\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("\n");
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 
-	printf("Prepared statement finalized (SELECT)\n");
+	LOG_PRINT("Prepared statement finalized (SELECT)\n");
 
 	return b;
 }
@@ -462,19 +463,19 @@ Reserva getReserva(sqlite3 *db, char cod[100]) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 
-	printf("SQL query prepared (SELECT)\n");
+	LOG_PRINT("SQL query prepared (SELECT)\n");
 
 	char idReserva[20];
 	char nomUsuario[20];
 	char nombre[40];
 
-	printf("\n");
-	printf("\n");
-	printf("RESERVA:\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("RESERVA:\n");
 	do {
 		result = sqlite3_step(stmt);
 		if (result == SQLITE_ROW) {
@@ -490,16 +491,16 @@ Reserva getReserva(sqlite3 *db, char cod[100]) {
 		}
 	} while (result == SQLITE_ROW);
 
-	printf("\n");
-	printf("\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("\n");
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 
-	printf("Prepared statement finalized (SELECT)\n");
+	LOG_PRINT("Prepared statement finalized (SELECT)\n");
 
 	return r;
 
@@ -513,12 +514,12 @@ int imprimirUsuarios(sqlite3 *db) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("SQL query prepared (SELECT)\n");
+	LOG_PRINT("SQL query prepared (SELECT)\n");
 
 	int idUsuario;
 	char nombre[20];
@@ -547,12 +548,12 @@ int imprimirUsuarios(sqlite3 *db) {
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("Prepared statement finalized (SELECT)\n");
+	LOG_PRINT("Prepared statement finalized (SELECT)\n");
 
 	return SQLITE_OK;
 
@@ -566,12 +567,12 @@ int imprimirSocios(sqlite3 *db) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("SQL query prepared (SELECT)\n");
+	LOG_PRINT("SQL query prepared (SELECT)\n");
 
 	char nombre[20];
 	char apellido[20];
@@ -603,12 +604,12 @@ int imprimirSocios(sqlite3 *db) {
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("Prepared statement finalized (SELECT)\n");
+	LOG_PRINT("Prepared statement finalized (SELECT)\n");
 
 	return SQLITE_OK;
 
@@ -621,12 +622,12 @@ int imprimirBiblioteca(sqlite3 *db) {
 	char sql[] = "select * from biblioteca";
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("SQL query prepared (SELECT)\n");
+	LOG_PRINT("SQL query prepared (SELECT)\n");
 
 	int idBiblioteca;
 	char nombre[10];
@@ -661,12 +662,12 @@ int imprimirBiblioteca(sqlite3 *db) {
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("Prepared statement finalized (SELECT)\n");
+	LOG_PRINT("Prepared statement finalized (SELECT)\n");
 
 	return SQLITE_OK;
 
@@ -680,12 +681,12 @@ int imprimirReserva(sqlite3 *db) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("SQL query prepared (SELECT)\n");
+	LOG_PRINT("SQL query prepared (SELECT)\n");
 
 	int idReserva;
 	char nomUsuario[20];
@@ -711,12 +712,12 @@ int imprimirReserva(sqlite3 *db) {
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("Prepared statement finalized (SELECT)\n");
+	LOG_PRINT("Prepared statement finalized (SELECT)\n");
 
 	return SQLITE_OK;
 
@@ -730,28 +731,28 @@ int deleteUsuario(sqlite3 *db, char cod[100]) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (DELETE)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (DELETE)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("SQL query prepared (DELETE)\n");
+	LOG_PRINT("SQL query prepared (DELETE)\n");
 
 	result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
-		printf("Error deleting data\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error deleting data\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (DELETE)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (DELETE)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("Prepared statement finalized (DELETE)\n");
+	LOG_PRINT("Prepared statement finalized (DELETE)\n");
 
 	return SQLITE_OK;
 }
@@ -764,28 +765,28 @@ int deleteSocios(sqlite3 *db, char cod[100]) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (DELETE)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (DELETE)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("SQL query prepared (DELETE)\n");
+	LOG_PRINT("SQL query prepared (DELETE)\n");
 
 	result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
-		printf("Error deleting data\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error deleting data\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (DELETE)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (DELETE)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("Prepared statement finalized (DELETE)\n");
+	LOG_PRINT("Prepared statement finalized (DELETE)\n");
 
 	return SQLITE_OK;
 }
@@ -798,28 +799,28 @@ int deleteBibliotecas(sqlite3 *db, char cod[100]) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (DELETE)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (DELETE)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("SQL query prepared (DELETE)\n");
+	LOG_PRINT("SQL query prepared (DELETE)\n");
 
 	result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
-		printf("Error deleting data\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error deleting data\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (DELETE)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (DELETE)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("Prepared statement finalized (DELETE)\n");
+	LOG_PRINT("Prepared statement finalized (DELETE)\n");
 
 	return SQLITE_OK;
 }
@@ -832,28 +833,28 @@ int deleteReservas(sqlite3 *db, char cod[100]) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (DELETE)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (DELETE)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("SQL query prepared (DELETE)\n");
+	LOG_PRINT("SQL query prepared (DELETE)\n");
 
 	result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
-		printf("Error deleting data\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error deleting data\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (DELETE)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (DELETE)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("Prepared statement finalized (DELETE)\n");
+	LOG_PRINT("Prepared statement finalized (DELETE)\n");
 
 	return SQLITE_OK;
 }
@@ -865,28 +866,28 @@ int deleteAllUsuarios(sqlite3 *db) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (DELETE)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (DELETE)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("SQL query prepared (DELETE)\n");
+	LOG_PRINT("SQL query prepared (DELETE)\n");
 
 	result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
-		printf("Error deleting data\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error deleting data\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (DELETE)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (DELETE)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("Prepared statement finalized (DELETE)\n");
+	LOG_PRINT("Prepared statement finalized (DELETE)\n");
 
 	return SQLITE_OK;
 }
@@ -898,28 +899,28 @@ int deleteAllSocios(sqlite3 *db) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (DELETE)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (DELETE)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("SQL query prepared (DELETE)\n");
+	LOG_PRINT("SQL query prepared (DELETE)\n");
 
 	result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
-		printf("Error deleting data\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error deleting data\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (DELETE)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (DELETE)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("Prepared statement finalized (DELETE)\n");
+	LOG_PRINT("Prepared statement finalized (DELETE)\n");
 
 	return SQLITE_OK;
 }
@@ -931,28 +932,28 @@ int deleteAllBibliotecas(sqlite3 *db) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (DELETE)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (DELETE)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("SQL query prepared (DELETE)\n");
+	LOG_PRINT("SQL query prepared (DELETE)\n");
 
 	result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
-		printf("Error deleting data\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error deleting data\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (DELETE)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (DELETE)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("Prepared statement finalized (DELETE)\n");
+	LOG_PRINT("Prepared statement finalized (DELETE)\n");
 
 	return SQLITE_OK;
 }
@@ -964,28 +965,28 @@ int deleteAllReservas(sqlite3 *db) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (DELETE)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (DELETE)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("SQL query prepared (DELETE)\n");
+	LOG_PRINT("SQL query prepared (DELETE)\n");
 
 	result = sqlite3_step(stmt);
 	if (result != SQLITE_DONE) {
-		printf("Error deleting data\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error deleting data\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (DELETE)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (DELETE)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 		return result;
 	}
 
-	printf("Prepared statement finalized (DELETE)\n");
+	LOG_PRINT("Prepared statement finalized (DELETE)\n");
 
 	return SQLITE_OK;
 }
@@ -999,15 +1000,15 @@ Usuario* getUsuarios(sqlite3 *db) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 
 	int i = 0;
 
-	printf("\n");
-	printf("\n");
-	printf("Recuperando usuarios:\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("Recuperando usuarios:\n");
 	do {
 		result = sqlite3_step(stmt);
 		if (result == SQLITE_ROW) {
@@ -1020,13 +1021,13 @@ Usuario* getUsuarios(sqlite3 *db) {
 		}
 	} while (result == SQLITE_ROW);
 
-	printf("\n");
-	printf("\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("\n");
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 
 	return usuarios;
@@ -1040,14 +1041,14 @@ Biblioteca* getBibliotecas(sqlite3 *db) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 
 	int i = 0;
-	printf("\n");
-	printf("\n");
-	printf("Recuperando bibliotecas:\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("Recuperando bibliotecas:\n");
 	do {
 		result = sqlite3_step(stmt);
 		if (result == SQLITE_ROW) {
@@ -1062,13 +1063,13 @@ Biblioteca* getBibliotecas(sqlite3 *db) {
 		}
 	} while (result == SQLITE_ROW);
 
-	printf("\n");
-	printf("\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("\n");
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 
 	return bibliotecas;
@@ -1082,14 +1083,14 @@ Reserva* getReservas(sqlite3 *db) {
 
 	int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
 	if (result != SQLITE_OK) {
-		printf("Error preparing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error preparing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 
 	int i = 0;
-	printf("\n");
-	printf("\n");
-	printf("Recuperando reserva:\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("Recuperando reserva:\n");
 	do {
 		result = sqlite3_step(stmt);
 		if (result == SQLITE_ROW) {
@@ -1100,13 +1101,13 @@ Reserva* getReservas(sqlite3 *db) {
 		}
 	} while (result == SQLITE_ROW);
 
-	printf("\n");
-	printf("\n");
+	LOG_PRINT("\n");
+	LOG_PRINT("\n");
 
 	result = sqlite3_finalize(stmt);
 	if (result != SQLITE_OK) {
-		printf("Error finalizing statement (SELECT)\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error finalizing statement (SELECT)\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 
 	return reservas;

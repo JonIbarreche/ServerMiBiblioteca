@@ -7,12 +7,13 @@
 
 #include "../../BD/BD.h"
 #include "../../BD/sqlite3.h"
+#include "../../Log/logger.h"
 
 void anadirReserva(sqlite3 *db, int result, Reserva reserva) {
 	result = insertReserva(db, reserva.usuario.nomUsuario, reserva.biblioteca.nombre);
 	if (result != SQLITE_OK) {
-		printf("Error al insertar la reserva.\n");
-		printf("%s%n", sqlite3_errmsg(db));
+		LOG_PRINT("Error al insertar la reserva.\n");
+		LOG_PRINT("%s%n", sqlite3_errmsg(db));
 	}
 }
 
@@ -25,16 +26,16 @@ void imprimirReservas(sqlite3 *db, Reserva reserva) {
 void eliminarReserva(sqlite3 *db, int result, char cod[100]) {
 	result = deleteReservas(db, cod);
 	if (result != SQLITE_OK) {
-		printf("Error al eliminar la reserva.\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error al eliminar la reserva.\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 }
 
 void eliminarTodasReservas(sqlite3 *db, int result) {
 	result = deleteAllReservas(db);
 	if (result != SQLITE_OK) {
-		printf("Error al eliminar todos las reservas.\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error al eliminar todos las reservas.\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 }
 

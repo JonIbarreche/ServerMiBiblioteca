@@ -6,14 +6,15 @@
 
 #include "../../BD/BD.h"
 #include "../../BD/sqlite3.h"
+#include "../../Log/logger.h"
 
 void anadirBiblioteca(sqlite3 *db, int result, Biblioteca biblioteca) {
 	result = insertBiblioteca(db, biblioteca.nombre, biblioteca.aforo,
 			biblioteca.estado, biblioteca.genero, biblioteca.instalacion,
 			biblioteca.barrio);
 	if (result != SQLITE_OK) {
-		printf("Error al insertar la biblioteca.\n");
-		printf("%s%n", sqlite3_errmsg(db));
+		LOG_PRINT("Error al insertar la biblioteca.\n");
+		LOG_PRINT("%s%n", sqlite3_errmsg(db));
 	}
 }
 
@@ -31,15 +32,15 @@ void imprimirBibliotecas(sqlite3 *db, Biblioteca biblioteca) {
 void eliminarBibliotecas(sqlite3 *db, int result, char cod[100]) {
 	result = deleteBibliotecas(db, cod);
 	if (result != SQLITE_OK) {
-		printf("Error al eliminar la biblioteca.\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error al eliminar la biblioteca.\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 }
 
 void eliminarTodasBibliotecas(sqlite3 *db, int result) {
 	result = deleteAllBibliotecas(db);
 	if (result != SQLITE_OK) {
-		printf("Error al eliminar todas las bibliotecas.\n");
-		printf("%s\n", sqlite3_errmsg(db));
+		LOG_PRINT("Error al eliminar todas las bibliotecas.\n");
+		LOG_PRINT("%s\n", sqlite3_errmsg(db));
 	}
 }
