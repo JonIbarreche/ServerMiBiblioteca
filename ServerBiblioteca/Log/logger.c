@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdarg.h>
-#include <sys/time.h>
+#include "time.h"
 #include <string.h>
 #include <stdlib.h>
 #include "logger.h"
